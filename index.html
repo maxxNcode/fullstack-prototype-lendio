@@ -9,7 +9,7 @@
     <title>Full-Stack App (Student Build)</title>
 </head>
 <body>
-    <nav> 
+    <nav class="not-loggedin"> 
         <div class="logo">
             Full-Stack App
         </div>
@@ -17,6 +17,31 @@
         <div class="links">
             <a href="">Login</a>
             <a href="">Register</a>
+        </div>
+    </nav>
+
+    <nav class="admin"> 
+        <div class="logo">
+            Full-Stack App
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" 
+            style="
+            background-color: rgba(240, 248, 255, 0); 
+            border: none;
+            ">
+                Admin
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Employees</a></li>
+                <li><a class="dropdown-item" href="#">Accounts</a></li>
+                <li><a class="dropdown-item" href="#">Departments</a></li>
+                <li><a class="dropdown-item" href="#">My Requests</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
         </div>
     </nav>
 
@@ -114,10 +139,8 @@
                 <p><strong>Email: </strong><span>admin@example.com</span></p>
                 <p><strong>Role: </strong><span>Admin</span></p>
 
-                 <button>Edit Profile</button>
+                <button>Edit Profile</button>
             </div>
-
-           
         </section>
 
     </main>

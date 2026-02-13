@@ -4,7 +4,15 @@
     box-sizing: border-box;
 }
 
-nav{
+.not-loggedin{
+    height: 70px;
+    background-color: rgb(31, 31, 31);
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 20px;
+}
+.admin{
     height: 70px;
     background-color: rgb(31, 31, 31);
     display: flex;
@@ -12,6 +20,7 @@ nav{
     align-items: center;
     padding: 0 20px 0 20px;
 }
+
 .logo{
     font-size: 22px;
     color: white;
@@ -129,7 +138,7 @@ form input{
 
 /* PROFILE PAGE */
 .profile-details{
-    padding: 10px;
+    padding: 6px;
     border: 2px solid #176df7;
     border-radius: 20px;
     width: 40%;
