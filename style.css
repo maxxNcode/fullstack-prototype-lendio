@@ -124,7 +124,31 @@ form input{
 /* LOGIN-PAGE */
 
 .login-section{
+    display: none;
+}
+
+/* PROFILE PAGE */
+.profile-details{
+    padding: 10px;
+    border: 2px solid #176df7;
+    border-radius: 20px;
+    width: 40%;
+
+    box-shadow: inset 0px 0px 10px rgb(206, 192, 255);
 
 }
 
+.profile-details button{
+    padding: 10px;
+    border-radius: 6px;
+    width: 120px;
+    background-color: rgba(250, 128, 114, 0);
+    border: 2px solid #176df7;
+    color: #176df7;
+    margin-bottom: 20px;
+}
 
+.profile-details button:hover{
+    background-color: #176df7;
+    color: white;
+}
