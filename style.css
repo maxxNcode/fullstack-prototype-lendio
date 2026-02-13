@@ -1,0 +1,58 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+nav{
+    height: 70px;
+    background-color: rgb(31, 31, 31);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 20px;
+}
+.logo{
+    font-size: 22px;
+    color: white;
+}
+
+.links{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+.links a{
+    color: rgb(184, 184, 184);
+}
+main{
+    padding: 0 20px 0 20px;
+}
+.note{
+    background-color: rgb(154, 235, 255);
+    padding: 10px;
+    height: 50px;
+    width: 600px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-radius: 8px;
+    color: rgb(0, 78, 78);
+    
+}
+.pink{
+    color: rgb(255, 80, 109);
+}
+.note p{
+    margin-top: 8px;
+}
+
+button{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgb(7, 137, 243);
+    border: none;
+    color: white;
+    margin-top: 20px;
+}
