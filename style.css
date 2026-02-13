@@ -3,7 +3,6 @@
     margin: 0;
     box-sizing: border-box;
 }
-
 .not-loggedin{
     height: 70px;
     background-color: rgb(31, 31, 31);
@@ -20,17 +19,14 @@
     align-items: center;
     padding: 0 20px 0 20px;
 }
-
 .logo{
     font-size: 22px;
     color: white;
 }
-
 .links{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    
 }
 .links a{
     color: rgb(184, 184, 184);
@@ -56,7 +52,6 @@ main{
 .note p{
     margin-top: 8px;
 }
-
 .getstarted-btn{
     padding: 10px;
     border-radius: 8px;
@@ -65,7 +60,6 @@ main{
     color: white;
     margin-top: 20px;
 }
-
 .links a:hover{
     text-decoration: none;
     color: rgb(132, 132, 132);
@@ -76,18 +70,11 @@ main{
 }
 
 
-
-
-
 /* PAGE SECTIONS */
-
 /* HOME */
 .home{
     display: none;
 }
-
-
-
 
 /* REGISTER */
 .register{
@@ -115,8 +102,6 @@ form input{
     gap: 10px;
 }
 
-
-
 /* VERIFY-EMAIL */
 .verify-email{
     display: none;
@@ -131,7 +116,6 @@ form input{
 }
 
 /* LOGIN-PAGE */
-
 .login-section{
     display: none;
 }
@@ -140,7 +124,6 @@ form input{
 .profile-section{
     display: none;
 }
-
 .profile-details{
     padding: 6px;
     border: 2px solid #176df7;
@@ -150,7 +133,6 @@ form input{
     box-shadow: inset 0px 0px 10px rgb(206, 192, 255);
 
 }
-
 .profile-details button{
     padding: 10px;
     border-radius: 6px;
@@ -160,12 +142,10 @@ form input{
     color: #176df7;
     margin-bottom: 20px;
 }
-
 .profile-details button:hover{
     background-color: #176df7;
     color: white;
 }
-
 .bulagon{
     display: flex;
     justify-content: space-between;
@@ -180,10 +160,7 @@ form input{
     color: white ;
 }
 
-
 /* EMPLOYEEE */
-
-
 .addedit{
     padding: 20px;
     border: 2px solid;
