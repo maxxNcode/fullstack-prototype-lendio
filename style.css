@@ -48,7 +48,7 @@ main{
     margin-top: 8px;
 }
 
-button{
+.getstarted-btn{
     padding: 10px;
     border-radius: 8px;
     background-color: rgb(7, 137, 243);
@@ -56,3 +56,71 @@ button{
     color: white;
     margin-top: 20px;
 }
+
+.links a:hover{
+    text-decoration: none;
+    color: rgb(132, 132, 132);
+}
+.links a:active{
+    text-decoration: none;
+    color: rgb(184, 184, 184);
+}
+
+
+
+
+
+/* PAGE SECTIONS */
+
+/* HOME */
+.home{
+    display: none;
+}
+
+
+
+
+/* REGISTER */
+.register{
+    display: none;
+}
+
+form{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.input-dsgn{
+    display: flex;
+    flex-direction: column;
+}
+form input{
+    height: 40px;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 20px;
+}
+.actions{
+    display: flex;
+    gap: 10px;
+}
+
+
+
+/* VERIFY-EMAIL */
+.verify-email{
+    display: none;
+}
+.vrfy-txt{
+    padding: 20px;
+    width: 30%;
+    background-color: #d2e7dd;
+    border-radius: 8px;
+}
+
+
+
+
+
+

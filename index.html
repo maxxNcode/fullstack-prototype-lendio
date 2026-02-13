@@ -20,24 +20,75 @@
         </div>
     </nav>
 
-    <main>
-        <h1>
-            Welcome to Full-Stack App
-        </h1>
+    <main>  
+        <!-- HOME -->
+        <section class="home">
+            <h1>
+                Welcome to Full-Stack App
+            </h1>
 
-        <p>A static prototype before backend integration. Simulates:</p>
-        <ul>
-            <li>Email registration + fake verification</li>
-            <li>Login with JWT-like token simulation</li>
-            <li>Role-based UI (Admin/User)</li>
-            <li>CRUD for Employees, Departments, Requests</li>
-        </ul>
+            <p>A static prototype before backend integration. Simulates:</p>
+            <ul>
+                <li>Email registration + fake verification</li>
+                <li>Login with JWT-like token simulation</li>
+                <li>Role-based UI (Admin/User)</li>
+                <li>CRUD for Employees, Departments, Requests</li>
+            </ul>
 
-        <div class="note">
-            <p><strong>Note:</strong> All data is stored in <span class="pink">localStorage</span>. Refresh to reset</p>
-        </div>
+            <div class="note">
+                <p><strong>⚠️ Note:</strong> All data is stored in <span class="pink">localStorage</span>. Refresh to reset</p>
+            </div>
 
-        <button>Get Started -></button>
+            <button class="getstarted-btn">Get Started ⮕</button>
+        </section>
+
+
+        <!-- REGISTER -->
+        <section class="register">
+            <h1>Register Account</h1>
+
+            <form action="">
+                <div class="input-dsgn">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname">
+                </div>
+
+                <div class="input-dsgn">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname">
+                </div>
+
+                <div class="input-dsgn">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="input-dsgn">
+                    <label for="password">Password</label>
+                    <input type="password" id="password">
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn btn-primary">Sign Up</button>
+                    <button class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="verify-email">
+            <h1>Verify Your Email</h1>
+
+            <p class="vrfy-txt">✅ A verification link has been sent to.</p>
+
+            <p>For demo purposes, click below to simulate verification:</p>
+
+            <div class="actions">
+                <button type="button" class="btn btn-primary">✅ Simulate Email Verification</button>
+                <button class="btn btn-secondary">Go to Login</button>
+            </div>
+        </section>
+
+        
     </main>
 
     <script src="script.js"></script>
