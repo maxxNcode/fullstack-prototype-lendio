@@ -3,10 +3,41 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+/* VIEW CONTROLER */
+.home{
+    display: block;
+}
+.register{
+    display: none;
+}
+.verify-email{
+    display: none;
+}
+.not-loggedin{
+    display: none;
+}
+.admin{
+    display: none;
+    /* flex */
+}
+.login-section{
+    display: none;
+}
+.profile-section{
+    display: none;
+}
+.employees-section{
+    display: none;
+}
+
+
+
+
+/* MAIN DESIGNS */
 .not-loggedin{
     height: 70px;
     background-color: rgb(31, 31, 31);
-    display: none;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px 0 20px;
@@ -14,7 +45,6 @@
 .admin{
     height: 70px;
     background-color: rgb(31, 31, 31);
-    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px 0 20px;
@@ -72,14 +102,10 @@ main{
 
 /* PAGE SECTIONS */
 /* HOME */
-.home{
-    display: none;
-}
+
 
 /* REGISTER */
-.register{
-    display: none;
-}
+
 
 form{
     width: 400px;
@@ -103,9 +129,7 @@ form input{
 }
 
 /* VERIFY-EMAIL */
-.verify-email{
-    display: none;
-}
+
 .vrfy-txt{
     padding: 20px;
     width: 30%;
@@ -116,14 +140,10 @@ form input{
 }
 
 /* LOGIN-PAGE */
-.login-section{
-    display: none;
-}
+
 
 /* PROFILE PAGE */
-.profile-section{
-    display: none;
-}
+
 .profile-details{
     padding: 6px;
     border: 2px solid #176df7;
@@ -161,6 +181,8 @@ form input{
 }
 
 /* EMPLOYEEE */
+
+
 .addedit{
     padding: 20px;
     border: 2px solid;
