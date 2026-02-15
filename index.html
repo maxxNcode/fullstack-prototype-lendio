@@ -8,18 +8,21 @@
     <link rel="stylesheet" href="style.css">
     <title>Full-Stack App (Student Build)</title>
 </head>
-<body>
-    <nav class="not-loggedin"> 
+<body class="not-authenticated">
+
+    <nav class="nav-not-loggedin"> 
         <div class="logo">
             Full-Stack App
         </div>
 
         <div class="links">
-            <a href="">Login</a>
-            <a href="">Register</a>
+            <a href="#login-section ">Login</a>
+            <a href="#register">Register</a>
         </div>
     </nav>
-    <nav class="admin"> 
+
+
+    <nav class="nav-admin"> 
         <div class="logo">
             Full-Stack App
         </div>
@@ -42,159 +45,227 @@
             </ul>
         </div>
     </nav>
+
     <main>  
         <!-- HOME -->
-        <section class="home">
-            <h1>
+        <section class="page active" id="home-page">
+            <div class="home">
+                <h1>
                 Welcome to Full-Stack App
-            </h1>
-            <p>A static prototype before backend integration. Simulates:</p>
-            <ul>
-                <li>Email registration + fake verification</li>
-                <li>Login with JWT-like token simulation</li>
-                <li>Role-based UI (Admin/User)</li>
-                <li>CRUD for Employees, Departments, Requests</li>
-            </ul>
-            <div class="note">
-                <p><strong>⚠️ Note:</strong> All data is stored in <span class="pink">localStorage</span>. Refresh to reset</p>
+                </h1>
+                <p>A static prototype before backend integration. Simulates:</p>
+                <ul>
+                    <li>Email registration + fake verification</li>
+                    <li>Login with JWT-like token simulation</li>
+                    <li>Role-based UI (Admin/User)</li>
+                    <li>CRUD for Employees, Departments, Requests</li>
+                </ul>
+                <div class="note">
+                    <p><strong>⚠️ Note:</strong> All data is stored in <span class="pink">localStorage</span>. Refresh to reset</p>
+                </div>
+                <button class="getstarted-btn" onclick="">Get Started ⮕</button>
             </div>
-            <button class="getstarted-btn">Get Started ⮕</button>
         </section>
+
         <!-- REGISTER -->
-        <section class="register">
-            <h1>Register Account</h1>
-            <form>
-                <div class="input-dsgn">
-                    <label for="firstname">First Name</label>
-                    <input type="text" id="firstname">
-                </div>
-                <div class="input-dsgn">
-                    <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname">
-                </div>
-                <div class="input-dsgn">
-                    <label for="email">Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="input-dsgn">
-                    <label for="password">Password</label>
-                    <input type="password" id="password">
-                </div>
+        <section class="page" id="register-page">
+            <div class="register">
+                <h1>Register Account</h1>
+                <form>
+                    <div class="input-dsgn">
+                        <label for="firstname">First Name</label>
+                        <input type="text" id="firstname">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" id="lastname">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="email">Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="password">Password</label>
+                        <input type="password" id="password">
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="btn btn-success">Sign Up</button>
+                        <button class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- VERIFY EMAIL -->
+        <section class="page" id="verify-page">
+            <div class="verify-email">
+                <h1>Verify Your Email</h1>
+                <p class="vrfy-txt">✅ A verification link has been sent to.</p>
+                <p>For demo purposes, click below to simulate verification:</p>
                 <div class="actions">
-                    <button type="button" class="btn btn-success">Sign Up</button>
-                    <button class="btn btn-secondary">Cancel</button>
+                    <button type="button" class="btn btn-success">✅ Simulate Email Verification</button>
+                    <button class="btn btn-secondary">Go to Login</button>
                 </div>
-            </form>
-        </section>
-        <section class="verify-email">
-            <h1>Verify Your Email</h1>
-            <p class="vrfy-txt">✅ A verification link has been sent to.</p>
-            <p>For demo purposes, click below to simulate verification:</p>
-            <div class="actions">
-                <button type="button" class="btn btn-success">✅ Simulate Email Verification</button>
-                <button class="btn btn-secondary">Go to Login</button>
             </div>
         </section>
-        <section class="login-section">
-            <br>
-            <p class="vrfy-txt">✅Email verified! You may now log in.</p>
-            <h1>Login</h1>
-            <form>
-                <div class="input-dsgn">
-                    <label for="email">Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="input-dsgn">
-                    <label for="password">Password</label>
-                    <input type="password" id="password">
-                </div>
-                <div class="actions">
-                    <button type="button" class="btn btn-primary">Log In</button>
-                    <button class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
-        </section>
-        <section class="profile-section">
-            <h1>My Profile</h1>
-            <div class="profile-details">
-                <h3>Admin User</h3>
-                <p><strong>Email: </strong><span>admin@example.com</span></p>
-                <p><strong>Role: </strong><span>Admin</span></p>
-                <button>Edit Profile</button>
+
+        <!-- LOGIN SECTION -->
+        <section class="page" id="login-page">
+            <div class="login-section">
+                <br>
+                <p class="vrfy-txt">✅Email verified! You may now log in.</p>
+                <h1>Login</h1>
+                <form>
+                    <div class="input-dsgn">
+                        <label for="email">Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="password">Password</label>
+                        <input type="password" id="password">
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="btn btn-primary">Log In</button>
+                        <button class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
             </div>
         </section>
-        <section class="employees-section">
-            <div class="bulagon">
-                <h1>Employees</h1>
-                <button>+ Add Employee</button>
+
+        <!-- PROFILE SECTION -->
+        <section class="page" id="profile-page">
+            <div class="profile">
+                <h1>My Profile</h1>
+                <div class="profile-details">
+                    <h3>Admin User</h3>
+                    <p><strong>Email: </strong><span>admin@example.com</span></p>
+                    <p><strong>Role: </strong><span>Admin</span></p>
+                    <button>Edit Profile</button>
+                </div>
             </div>
-            <table class="table table-striped">
+        </section>
+
+        <!-- EMPLOYEE SECTION -->
+        <section class="page" id="employees-page">
+            <div class="employees-section">
+                <div class="bulagon">
+                    <h1>Employees</h1>
+                    <button>+ Add Employee</button>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Dept</th>
+                        <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>Hello</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>asd</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry the Bird</td>
+                            <td>asdasd</td>
+                            <td>@twitter</td>
+                            <td>asdasd</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="addedit">
+                    <div style="
+                        background-color: #ececec;
+                        padding: 10px;
+                        width: 400px;
+                        border-radius: 10px;
+                    ">Add/Edit Employee</div>
+                    <form>
+                    <div class="input-dsgn">
+                        <label for="empid">Employee ID</label>
+                        <input type="text" id="empid">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="email">User Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="position">Position</label>
+                        <input type="text" id="position">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="department">Department</label>
+                        <input type="text" id="department">
+                    </div>
+                    <div class="input-dsgn">
+                        <label for="date">Date</label>
+                        <input type="date" id="date">
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="btn btn-primary">Save</button>
+                        <button class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEPARTMENT SECTION -->
+        <section class="" id="department-page">
+            <div class="department">
+                <div class="dept-header">
+                    <h1>Departments</h1>
+                    <button class="btn btn-success">+ Add Department</button>
+                </div>
+
+                <table class="table table-striped">
                 <thead>
                     <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Dept</th>
+                    <th scope="col">Description</th>
                     <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Hello</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td class="tb-btn-holder">
+                        <button type="button" class="btn btn-outline-primary">Edit</button>
+                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                    </td>
                     </tr>
                     <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>asd</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td class="tb-btn-holder">
+                        <button type="button" class="btn btn-outline-primary">Edit</button>
+                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                    </td>
                     </tr>
                     <tr>
-                        <th scope="row">3</th>
-                        <td>Larry the Bird</td>
-                        <td>asdasd</td>
-                        <td>@twitter</td>
-                        <td>asdasd</td>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td class="tb-btn-holder">
+                        <button type="button" class="btn btn-outline-primary">Edit</button>
+                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                    </td>
                     </tr>
                 </tbody>
-            </table>
-            <div class="addedit">
-                <div style="
-                    background-color: #ececec;
-                    padding: 10px;
-                    width: 400px;
-                    border-radius: 10px;
-                ">Add/Edit Employee</div>
-                <form>
-                <div class="input-dsgn">
-                    <label for="empid">Employee ID</label>
-                    <input type="text" id="empid">
-                </div>
-                <div class="input-dsgn">
-                    <label for="email">User Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="input-dsgn">
-                    <label for="position">Position</label>
-                    <input type="text" id="position">
-                </div>
-                <div class="input-dsgn">
-                    <label for="department">Department</label>
-                    <input type="text" id="department">
-                </div>
-                <div class="input-dsgn">
-                    <label for="date">Date</label>
-                    <input type="date" id="date">
-                </div>
-                <div class="actions">
-                    <button type="button" class="btn btn-primary">Save</button>
-                    <button class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
+                </table>
             </div>
         </section>
     </main>
