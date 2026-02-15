@@ -207,7 +207,7 @@ form input {
 .department{
     width: 100%;
 }
-.dept-header{
+.flexMe{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -218,4 +218,10 @@ form input {
 }
 .tb-tbn-holder button:nth-child(1){
     
+}
+
+/* ACCOUNTS PAGE */
+
+#accounts-page{
+    padding-bottom: 30px;
 }
