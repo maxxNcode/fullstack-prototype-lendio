@@ -491,3 +491,246 @@ function handleSaveProfile() {
         alert("Profile updated successfully!");
     }
 }
+
+
+
+
+
+// EDIT PROFILE FUNCTIONS
+// Show the edit profile form
+function showEditProfile() {
+    if (!currentUser) return;
+    // Populate the edit form with current user data
+    document.getElementById("edit-firstname").value = currentUser.firstName;
+    document.getElementById("edit-lastname").value = currentUser.lastName;
+    document.getElementById("edit-email").value = currentUser.email;
+    document.getElementById("edit-password").value = "";
+    // Hide profile content, show edit form
+    document.getElementById("profile-content").style.display = "none";
+    document.getElementById("profile-edit").style.display = "block";
+}
+// Cancel editing and return to profile view
+function cancelEditProfile() {
+    document.getElementById("profile-content").style.display = "block";
+    document.getElementById("profile-edit").style.display = "none";
+}
+// Save profile changes
+function handleSaveProfile() {
+    if (!currentUser) return;
+    const firstName = document.getElementById("edit-firstname").value;
+    const lastName = document.getElementById("edit-lastname").value;
+    const newPassword = document.getElementById("edit-password").value;
+    // Validate inputs
+    if (!firstName || !lastName) {
+        alert("First name and last name are required");
+        return;
+    }
+    
+    // Find the user in the database and update
+    const userIndex = window.db.accounts.findIndex(account => 
+        account.email === currentUser.email
+    );
+    
+    if (userIndex !== -1) {
+        // Update user data
+        window.db.accounts[userIndex].firstName = firstName;
+        window.db.accounts[userIndex].lastName = lastName;
+        
+        // Update password only if a new one was entered
+        if (newPassword) {
+            window.db.accounts[userIndex].password = newPassword;
+        }
+        
+        // Save to localStorage
+        saveToStorage();
+        
+        // Update currentUser
+        currentUser.firstName = firstName;
+        currentUser.lastName = lastName;
+        if (newPassword) {
+            currentUser.password = newPassword;
+        }
+        
+        // Update nav username
+        const navUsername = document.getElementById("nav-username");
+        if (navUsername) {
+            navUsername.innerText = firstName;
+        }
+        
+        // Show profile content again
+        document.getElementById("profile-content").style.display = "block";
+        document.getElementById("profile-edit").style.display = "none";
+        
+        // Update the profile display
+        renderProfile();
+        
+        alert("Profile updated successfully!");
+    }
+}
+
+// ACCOUNTS CRUD FUNCTIONS
+// Render the accounts list table
+function renderAccountsList() {
+    const tableBody = document.getElementById("accounts-table-body");
+    if (!tableBody) return;
+    
+    let html = "";
+    
+    for (let i = 0; i < window.db.accounts.length; i++) {
+        const account = window.db.accounts[i];
+        const fullName = account.firstName + " " + account.lastName;
+        const verifiedText = account.verified ? "✓" : "—";
+        const roleDisplay = account.role.charAt(0).toUpperCase() + account.role.slice(1);
+        
+        html += `
+            <tr>
+                <td>${fullName}</td>
+                <td>${account.email}</td>
+                <td>${roleDisplay}</td>
+                <td>${verifiedText}</td>
+                <td class="tb-btn-holder">
+                    <button type="button" class="btn btn-outline-primary" onclick="editAccount('${account.email}')">Edit</button>
+                    <button type="button" class="btn btn-outline-warning" onclick="resetAccountPassword('${account.email}')">Reset PW</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteAccount('${account.email}')">Delete</button>
+                </td>
+            </tr>
+        `;
+    }
+    
+    tableBody.innerHTML = html;
+}
+
+// Show the Add Account form
+function showAddAccountForm() {
+    document.getElementById("account-form-title").innerText = "Add Account";
+    document.getElementById("account-edit-email").value = "";
+    document.getElementById("account-firstname").value = "";
+    document.getElementById("account-lastname").value = "";
+    document.getElementById("account-email").value = "";
+    document.getElementById("account-email").readOnly = false;
+    document.getElementById("account-password").value = "";
+    document.getElementById("account-role").value = "user";
+    document.getElementById("account-verified").checked = false;
+    document.getElementById("account-form-container").style.display = "block";
+}
+
+// Edit an existing account
+function editAccount(email) {
+    const account = window.db.accounts.find(acc => acc.email === email);
+    if (!account) return;
+    
+    document.getElementById("account-form-title").innerText = "Edit Account";
+    document.getElementById("account-edit-email").value = email;
+    document.getElementById("account-firstname").value = account.firstName;
+    document.getElementById("account-lastname").value = account.lastName;
+    document.getElementById("account-email").value = account.email;
+    document.getElementById("account-email").readOnly = true;
+    document.getElementById("account-password").value = "";
+    document.getElementById("account-password").placeholder = "Leave blank to keep current";
+    document.getElementById("account-role").value = account.role;
+    document.getElementById("account-verified").checked = account.verified;
+    document.getElementById("account-form-container").style.display = "block";
+}
+
+// Reset account password
+function resetAccountPassword(email) {
+    const newPassword = prompt("Enter new password (min 6 characters):");
+    if (!newPassword) return;
+    
+    if (newPassword.length < 6) {
+        alert("Password must be at least 6 characters");
+        return;
+    }
+    
+    const account = window.db.accounts.find(acc => acc.email === email);
+    if (account) {
+        account.password = newPassword;
+        saveToStorage();
+        alert("Password reset successfully for " + email);
+    }
+}
+
+// Delete an account
+function deleteAccount(email) {
+    // Prevent self-deletion
+    if (currentUser && currentUser.email === email) {
+        alert("You cannot delete your own account!");
+        return;
+    }
+    
+    if (!confirm("Are you sure you want to delete this account?")) return;
+    
+    const index = window.db.accounts.findIndex(acc => acc.email === email);
+    if (index !== -1) {
+        window.db.accounts.splice(index, 1);
+        saveToStorage();
+        renderAccountsList();
+        alert("Account deleted successfully");
+    }
+}
+
+// Save account (add or edit)
+function handleSaveAccount() {
+    const editEmail = document.getElementById("account-edit-email").value;
+    const firstName = document.getElementById("account-firstname").value;
+    const lastName = document.getElementById("account-lastname").value;
+    const email = document.getElementById("account-email").value;
+    const password = document.getElementById("account-password").value;
+    const role = document.getElementById("account-role").value;
+    const verified = document.getElementById("account-verified").checked;
+    
+    // Validate
+    if (!firstName || !lastName || !email) {
+        alert("First name, last name, and email are required");
+        return;
+    }
+    
+    if (editEmail === "") {
+        // Adding new account
+        if (!password || password.length < 6) {
+            alert("Password is required and must be at least 6 characters");
+            return;
+        }
+        
+        // Check if email exists
+        const exists = window.db.accounts.find(acc => acc.email === email);
+        if (exists) {
+            alert("Email already exists");
+            return;
+        }
+        
+        // Add new account
+        window.db.accounts.push({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            role: role,
+            verified: verified
+        });
+    } else {
+        // Editing existing account
+        const account = window.db.accounts.find(acc => acc.email === editEmail);
+        if (account) {
+            account.firstName = firstName;
+            account.lastName = lastName;
+            account.role = role;
+            account.verified = verified;
+            
+            // Only update password if provided
+            if (password && password.length >= 6) {
+                account.password = password;
+            }
+        }
+    }
+    
+    saveToStorage();
+    hideAccountForm();
+    renderAccountsList();
+    alert("Account saved successfully");
+}
+
+// Hide the account form
+function hideAccountForm() {
+    document.getElementById("account-form-container").style.display = "none";
+}
