@@ -249,3 +249,67 @@ function handleRegister() {
   alert("Registration successful! Please verify your email.");
   navigateTo("#/verify-email");
 }
+
+
+
+// EMAIL VERIFICATION FUNCTION
+function handleVerify() {
+  // Get the unverified email from localStorage
+  const unverifiedEmail = localStorage.getItem("unverified_email");
+  
+  if (!unverifiedEmail) {
+    alert("No pending verification found. Please register first.");
+    navigateTo("#/register");
+    return;
+  }
+  // Find account by unverified_email
+  const user = window.db.accounts.find(account => 
+    account.email === unverifiedEmail
+  );
+  if (user) {
+    // Set verified to true
+    user.verified = true;
+    saveToStorage();
+    // Clear the unverified_email from localStorage
+    localStorage.removeItem("unverified_email");
+    // Set flag to show verified message on login page
+    justVerified = true;
+    alert("Email verified! You can now login with email: " + user.email);
+    navigateTo("#/login");
+  } else {
+    alert("Account not found for email: " + unverifiedEmail + ". Please register again.");
+    localStorage.removeItem("unverified_email");
+    navigateTo("#/register");
+  }
+}
+// LOGOUT FUNCTION
+function handleLogout() {
+  // Clear the auth token
+  localStorage.removeItem("auth_token");
+  // Reset the UI state
+  setAuthState(false, null);
+  // Navigate to home
+  navigateTo("#/");
+  alert("You have been logged out");
+}
+// PAGE INITIALIZATION
+// This runs when the page finishes loading
+document.addEventListener("DOMContentLoaded", function() {
+  // Load data from storage
+  loadFromStorage();
+  // Check if user is already logged in (has auth token)
+  const savedToken = localStorage.getItem("auth_token");
+  if (savedToken) {
+    // Find the user by email
+    const user = window.db.accounts.find(account => 
+      account.email === savedToken
+    );
+    if (user) {
+      setAuthState(true, user);
+    }
+  }
+  // Setup routing
+  handleRouting();
+  // Add click handlers to buttons
+  setupButtonHandlers();
+});
