@@ -930,3 +930,154 @@ function handleSaveEmployee() {
 function hideEmployeeForm() {
     document.getElementById("employee-form-container").style.display = "none";
 }
+
+
+// USER REQUESTS FUNCTIONS
+// Render the requests list table - only show requests for current user
+function renderRequestsList() {
+    const tableBody = document.getElementById("requests-table-body");
+    const noRequestsMsg = document.getElementById("no-requests-msg");
+    const requestsTable = document.getElementById("requests-table");
+    
+    if (!tableBody) return;
+    
+    // Filter requests for current user only
+    const userRequests = window.db.requests.filter(req => req.employeeEmail === currentUser.email);
+    
+    if (userRequests.length === 0) {
+        if (requestsTable) requestsTable.style.display = "none";
+        if (noRequestsMsg) noRequestsMsg.style.display = "block";
+        return;
+    }
+    
+    if (requestsTable) requestsTable.style.display = "table";
+    if (noRequestsMsg) noRequestsMsg.style.display = "none";
+
+    let html = "";
+    for (let i = 0; i < userRequests.length; i++) {
+        const req = userRequests[i];
+        // Create items summary
+        let itemsSummary = "";
+        if (req.items && req.items.length > 0) {
+            itemsSummary = req.items.map(item => item.name + " (" + item.qty + ")").join(", ");
+        }
+        // Status badge styling
+        let statusBadge = "";
+        if (req.status === "Pending") {
+            statusBadge = '<span class="badge bg-warning text-dark">Pending</span>';
+        } else if (req.status === "Approved") {
+            statusBadge = '<span class="badge bg-success">Approved</span>';
+        } else if (req.status === "Rejected") {
+            statusBadge = '<span class="badge bg-danger">Rejected</span>';
+        }
+        html += `
+            <tr>
+                <td>${req.type}</td>
+                <td>${itemsSummary}</td>
+                <td>${req.date}</td>
+                <td>${statusBadge}</td>
+            </tr>
+        `;
+    }
+    tableBody.innerHTML = html;
+}
+// Add a new item field in the modal
+function addRequestItem() {
+    const container = document.getElementById("request-items-container");
+    if (!container) return;
+    
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "input-group mb-2";
+    itemDiv.innerHTML = `
+        <input type="text" class="form-control request-item-name" placeholder="Item name">
+        <input type="number" class="form-control request-item-qty" value="1" style="max-width: 60px;" min="1">
+        <button class="btn btn-outline-danger" type="button" onclick="removeRequestItem(this)">×</button>
+    `;
+    
+    container.appendChild(itemDiv);
+}
+
+// Remove an item field from the modal
+function removeRequestItem(button) {
+    const itemDiv = button.parentElement;
+    if (itemDiv) {
+        itemDiv.remove();
+    }
+}
+
+// Handle submit request
+function handleSubmitRequest() {
+    if (!currentUser) return;
+    
+    const type = document.getElementById("request-type").value;
+    const itemNames = document.querySelectorAll(".request-item-name");
+    const itemQtys = document.querySelectorAll(".request-item-qty");
+    
+    // Build items array
+    const items = [];
+    for (let i = 0; i < itemNames.length; i++) {
+        const name = itemNames[i].value.trim();
+        const qty = parseInt(itemQtys[i].value) || 1;
+        
+        if (name) {
+            items.push({ name: name, qty: qty });
+        }
+    }
+    
+    // Validate at least one item
+    if (items.length === 0) {
+        alert("Please add at least one item");
+        return;
+    }
+    
+    // Create request object
+    const today = new Date();
+    const dateStr = today.toISOString().split('T')[0];
+    
+    const newRequest = {
+        type: type,
+        items: items,
+        status: "Pending",
+        date: dateStr,
+        employeeEmail: currentUser.email
+    };
+    
+    // Add to database
+    window.db.requests.push(newRequest);
+    saveToStorage();
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById("newRequestModal"));
+    if (modal) {
+        modal.hide();
+    }
+    
+    // Clear form
+    clearRequestForm();
+    
+    // Refresh the list
+    renderRequestsList();
+    
+    alert("Request submitted successfully!");
+}
+
+// Clear the request form
+function clearRequestForm() {
+    document.getElementById("request-type").value = "Equipment";
+    const container = document.getElementById("request-items-container");
+    if (container) {
+        container.innerHTML = "";
+    }
+    // Add one empty item field
+    addRequestItem();
+}
+
+// Initialize request form when modal opens
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("newRequestModal");
+    if (modal) {
+        modal.addEventListener("show.bs.modal", function() {
+            clearRequestForm();
+        });
+    }
+});
