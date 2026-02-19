@@ -313,3 +313,106 @@ document.addEventListener("DOMContentLoaded", function() {
   // Add click handlers to buttons
   setupButtonHandlers();
 });
+
+
+
+
+// BUTTON HANDLERS
+function setupButtonHandlers() {
+  // Get Started button - goes to register page
+  const getStartedBtn = document.querySelector(".getstarted-btn");
+  if (getStartedBtn) {
+    getStartedBtn.onclick = function() {
+      navigateTo("#/register");
+    };
+  }
+  // Login button
+  const loginBtn = document.querySelector("#login-page .btn-primary");
+  if (loginBtn) {
+    loginBtn.onclick = handleLogin;
+  }
+  // Register button
+  const registerBtn = document.querySelector("#register-page .btn-success");
+  if (registerBtn) {
+    registerBtn.onclick = handleRegister;
+  }
+  // Verify button (updated to new page ID)
+  const verifyBtn = document.querySelector("#verify-email-page .btn-success");
+  if (verifyBtn) {
+    verifyBtn.onclick = handleVerify;
+  }
+  // Navigation links
+  setupNavigationLinks();
+}
+// NAVIGATION LINKS
+function setupNavigationLinks() {
+  // Login link in nav
+  const loginLink = document.querySelector('.links a[href="#login"]');
+  if (loginLink) {
+    loginLink.onclick = function(e) {
+      e.preventDefault();
+      navigateTo("#/login");
+    };
+  }
+  // Register link in nav
+  const registerLink = document.querySelector('.links a[href="#register"]');
+  if (registerLink) {
+    registerLink.onclick = function(e) {
+      e.preventDefault();
+      navigateTo("#/register");
+    };
+  }
+  // Handle logout link
+  const logoutLink = document.querySelector(".dropdown-item[href='#logout']");
+  if (logoutLink) {
+    logoutLink.onclick = function(e) {
+      e.preventDefault();
+      handleLogout();
+    };
+  }
+  // Setup dropdown menu navigation links using event delegation
+  const dropdownMenu = document.querySelector('.nav-admin .dropdown-menu');
+  if (dropdownMenu) {
+    dropdownMenu.addEventListener('click', function(e) {
+      const link = e.target.closest('.dropdown-item');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#') && href !== '#logout') {
+          e.preventDefault();
+          e.stopPropagation();
+          const page = href.replace('#', '');
+          navigateTo('#/' + page);
+        }
+      }
+    });
+  }
+}
+// HELPER FUNCTIONS (can be called from HTML onclick)
+function goToRegister() {
+  navigateTo("#/register");
+}
+function goToLogin() {
+  navigateTo("#/login");
+}
+// RENDER PROFILE PAGE WITH USER DATA
+function renderProfile() {
+    // Only update if user is logged in
+    if (!currentUser) return;
+    // Get the profile content container
+    const profileContent = document.getElementById("profile-content");
+    if (profileContent) {
+        // Build the HTML with dynamic user data
+        // Displays user's name, email, role
+        profileContent.innerHTML = `
+            <h3>${currentUser.firstName} ${currentUser.lastName}</h3>
+            <p><strong>Email: </strong><span>${currentUser.email}</span></p>
+            <p><strong>Role: </strong><span>${currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}</span></p>
+            <button class="btn btn-primary" onclick="showEditProfile()">Edit Profile</button>
+        `;
+    }
+    // Hide edit form when showing profile
+    const editForm = document.getElementById("profile-edit");
+    if (editForm) {
+        editForm.style.display = "none";
+    }
+}
