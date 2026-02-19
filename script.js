@@ -146,3 +146,106 @@ function handleRouting() {
 // Listen for URL hash changes
 window.addEventListener("hashchange", handleRouting);
 
+
+// AUTHENTICATION STATE
+
+// This updates the UI based on login state
+function setAuthState(isLoggedIn, user = null) {
+  // Store the current user
+  currentUser = user;
+  // Update body classes for CSS styling
+  document.body.classList.toggle("authenticated", isLoggedIn);
+  document.body.classList.toggle("not-authenticated", !isLoggedIn);
+
+  // Add admin class if user is admin
+  if (user && user.role === "admin") {
+    document.body.classList.add("is-admin");
+  } else {
+    document.body.classList.remove("is-admin");
+  }
+  // Update navigation to show username
+  const navUsername = document.getElementById("nav-username");
+  if (navUsername && user) {
+    navUsername.innerText = user.firstName;
+  }
+}
+
+// LOGIN FUNCTION
+function handleLogin() {
+  // Get input values
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+  // Validate inputs
+  if (!email || !password) {
+    alert("Please enter email and password");
+    return;
+  }
+  // Find user by email only first (to check if account exists)
+  const userByEmail = window.db.accounts.find(account => 
+    account.email === email
+  );
+  if (!userByEmail) {
+    alert("No account found with this email");
+    return;
+  }
+  // Check if password matches
+  if (userByEmail.password !== password) {
+    alert("Incorrect password");
+    return;
+  }
+  // Check if verified
+  if (userByEmail.verified !== true) {
+    alert("Account not verified. Please verify your email first.");
+    return;
+  }
+  // Save a fake "auth token" (just the email)
+  localStorage.setItem("auth_token", userByEmail.email);
+  // Update the UI state
+  setAuthState(true, userByEmail);
+  // Navigate to profile page
+  navigateTo("#/profile");
+  alert("Login successful! Welcome, " + userByEmail.firstName);
+}
+// REGISTER FUNCTION
+function handleRegister() {
+  // Get input values
+  const firstName = document.getElementById("reg-firstname").value;
+  const lastName = document.getElementById("reg-lastname").value;
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
+  // Validate inputs - check all fields are filled
+  if (!firstName || !lastName || !email || !password) {
+    alert("Please fill in all fields");
+    return;
+  }
+  // Validate password minimum length (6 chars)
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+  // Check if email already exists
+  const existingUser = window.db.accounts.find(account => 
+    account.email === email
+  );
+  if (existingUser) {
+    alert("Email already registered");
+    return;
+  }
+  // Create new user with verified: false
+  const newUser = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    role: "user", // Default role is "user"
+    verified: false // Needs verification
+  };
+  // Add to database
+  window.db.accounts.push(newUser);
+  saveToStorage();
+  // Store email in localStorage.unverified_email
+  localStorage.setItem("unverified_email", email);
+  // Navigate to verify-email page
+  alert("Registration successful! Please verify your email.");
+  navigateTo("#/verify-email");
+}
