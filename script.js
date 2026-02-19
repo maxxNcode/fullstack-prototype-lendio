@@ -734,3 +734,199 @@ function handleSaveAccount() {
 function hideAccountForm() {
     document.getElementById("account-form-container").style.display = "none";
 }
+
+
+// DEPARTMENTS CRUD FUNCTIONS
+// Render the departments list table
+function renderDepartmentsList() {
+    const tableBody = document.getElementById("departments-table-body");
+    if (!tableBody) return;
+    
+    let html = "";
+    
+    for (let i = 0; i < window.db.departments.length; i++) {
+        const dept = window.db.departments[i];
+        
+        html += `
+            <tr>
+                <td>${dept.name}</td>
+                <td>${dept.description}</td>
+                <td class="tb-btn-holder">
+                    <button type="button" class="btn btn-outline-primary" onclick="editDepartment(${dept.id})">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteDepartment(${dept.id})">Delete</button>
+                </td>
+            </tr>
+        `;
+    }
+    
+    tableBody.innerHTML = html;
+}
+
+// Show Add Department form (placeholder)
+function showAddDepartmentForm() {
+    alert("Not implemented");
+}
+
+// Edit Department (placeholder)
+function editDepartment(id) {
+    alert("Not implemented");
+}
+
+// Delete Department
+function deleteDepartment(id) {
+    if (!confirm("Are you sure you want to delete this department?")) return;
+    
+    const index = window.db.departments.findIndex(dept => dept.id === id);
+    if (index !== -1) {
+        window.db.departments.splice(index, 1);
+        saveToStorage();
+        renderDepartmentsList();
+        alert("Department deleted successfully");
+    }
+}
+
+// EMPLOYEES CRUD FUNCTIONS
+// Render the employees list table
+function renderEmployeesTable() {
+    const tableBody = document.getElementById("employees-table-body");
+    if (!tableBody) return;
+    
+    let html = "";
+    
+    for (let i = 0; i < window.db.employees.length; i++) {
+        const emp = window.db.employees[i];
+        
+        // Find the account email
+        const account = window.db.accounts.find(acc => acc.email === emp.userEmail);
+        const displayName = account ? (account.firstName + " " + account.lastName) : emp.userEmail;
+        
+        // Find the department name - compare as strings to handle both number and string IDs
+        const dept = window.db.departments.find(d => String(d.id) === String(emp.departmentId));
+        const deptName = dept ? dept.name : "—";
+        
+        html += `
+            <tr>
+                <th scope="row">${emp.id}</th>
+                <td>${emp.userEmail}</td>
+                <td>${emp.position}</td>
+                <td>${deptName}</td>
+                <td class="tb-btn-holder">
+                    <button type="button" class="btn btn-outline-primary" onclick="editEmployee('${emp.id}')">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteEmployee('${emp.id}')">Delete</button>
+                </td>
+            </tr>
+        `;
+    }
+    
+    tableBody.innerHTML = html;
+}
+// Populate department dropdown
+function populateDepartmentDropdown() {
+    const select = document.getElementById("emp-department");
+    if (!select) return;
+    
+    let html = '<option value="">Select Department</option>';
+    
+    for (let i = 0; i < window.db.departments.length; i++) {
+        const dept = window.db.departments[i];
+        html += `<option value="${dept.id}">${dept.name}</option>`;
+    }
+    
+    select.innerHTML = html;
+}
+
+// Show Add Employee form
+function showAddEmployeeForm() {
+    document.getElementById("employee-form-title").innerText = "Add Employee";
+    document.getElementById("employee-edit-id").value = "";
+    document.getElementById("emp-id").value = "";
+    document.getElementById("emp-id").readOnly = false;
+    document.getElementById("emp-email").value = "";
+    document.getElementById("emp-position").value = "";
+    document.getElementById("emp-date").value = "";
+    populateDepartmentDropdown();
+    document.getElementById("employee-form-container").style.display = "block";
+}
+// Edit an existing employee
+function editEmployee(id) {
+    const emp = window.db.employees.find(e => e.id === id);
+    if (!emp) return;
+    
+    document.getElementById("employee-form-title").innerText = "Edit Employee";
+    document.getElementById("employee-edit-id").value = id;
+    document.getElementById("emp-id").value = emp.id;
+    document.getElementById("emp-id").readOnly = true;
+    document.getElementById("emp-email").value = emp.userEmail;
+    document.getElementById("emp-position").value = emp.position;
+    document.getElementById("emp-date").value = emp.hireDate || "";
+    populateDepartmentDropdown();
+    document.getElementById("emp-department").value = emp.departmentId || "";
+    document.getElementById("employee-form-container").style.display = "block";
+}
+// Delete an employee
+function deleteEmployee(id) {
+    if (!confirm("Are you sure you want to delete this employee?")) return;
+    
+    const index = window.db.employees.findIndex(e => e.id === id);
+    if (index !== -1) {
+        window.db.employees.splice(index, 1);
+        saveToStorage();
+        renderEmployeesTable();
+        alert("Employee deleted successfully");
+    }
+}
+// Save employee (add or edit)
+function handleSaveEmployee() {
+    const editId = document.getElementById("employee-edit-id").value;
+    const empId = document.getElementById("emp-id").value;
+    const userEmail = document.getElementById("emp-email").value;
+    const position = document.getElementById("emp-position").value;
+    const departmentId = document.getElementById("emp-department").value;
+    const hireDate = document.getElementById("emp-date").value;
+    
+    // Validate
+    if (!empId || !userEmail || !position) {
+        alert("Employee ID, User Email, and Position are required");
+        return;
+    }
+    // Check if user email matches existing account
+    const account = window.db.accounts.find(acc => acc.email === userEmail);
+    if (!account) {
+        alert("User email must match an existing account");
+        return;
+    }
+    if (editId === "") {
+        // Adding new employee
+        // Check if employee ID already exists
+        const exists = window.db.employees.find(e => e.id === empId);
+        if (exists) {
+            alert("Employee ID already exists");
+            return;
+        }
+        // Add new employee
+        window.db.employees.push({
+            id: empId,
+            userEmail: userEmail,
+            position: position,
+            departmentId: departmentId,
+            hireDate: hireDate
+        });
+    } else {
+        // Editing existing employee
+        const emp = window.db.employees.find(e => e.id === editId);
+        if (emp) {
+            emp.userEmail = userEmail;
+            emp.position = position;
+            emp.departmentId = departmentId;
+            emp.hireDate = hireDate;
+        }
+    }
+    saveToStorage();
+    hideEmployeeForm();
+    renderEmployeesTable();
+    alert("Employee saved successfully");
+}
+// Hide the employee form
+function hideEmployeeForm() {
+    document.getElementById("employee-form-container").style.display = "none";
+}
