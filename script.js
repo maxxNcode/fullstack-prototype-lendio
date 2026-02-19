@@ -416,3 +416,78 @@ function renderProfile() {
         editForm.style.display = "none";
     }
 }
+
+
+
+
+// EDIT PROFILE FUNCTIONS
+// Show the edit profile form
+function showEditProfile() {
+    if (!currentUser) return;
+    // Populate the edit form with current user data
+    document.getElementById("edit-firstname").value = currentUser.firstName;
+    document.getElementById("edit-lastname").value = currentUser.lastName;
+    document.getElementById("edit-email").value = currentUser.email;
+    document.getElementById("edit-password").value = "";
+    // Hide profile content, show edit form
+    document.getElementById("profile-content").style.display = "none";
+    document.getElementById("profile-edit").style.display = "block";
+}
+// Cancel editing and return to profile view
+function cancelEditProfile() {
+    document.getElementById("profile-content").style.display = "block";
+    document.getElementById("profile-edit").style.display = "none";
+}
+// Save profile changes
+function handleSaveProfile() {
+    if (!currentUser) return;
+    const firstName = document.getElementById("edit-firstname").value;
+    const lastName = document.getElementById("edit-lastname").value;
+    const newPassword = document.getElementById("edit-password").value;
+    // Validate inputs
+    if (!firstName || !lastName) {
+        alert("First name and last name are required");
+        return;
+    }
+    
+    // Find the user in the database and update
+    const userIndex = window.db.accounts.findIndex(account => 
+        account.email === currentUser.email
+    );
+    
+    if (userIndex !== -1) {
+        // Update user data
+        window.db.accounts[userIndex].firstName = firstName;
+        window.db.accounts[userIndex].lastName = lastName;
+        
+        // Update password only if a new one was entered
+        if (newPassword) {
+            window.db.accounts[userIndex].password = newPassword;
+        }
+        
+        // Save to localStorage
+        saveToStorage();
+        
+        // Update currentUser
+        currentUser.firstName = firstName;
+        currentUser.lastName = lastName;
+        if (newPassword) {
+            currentUser.password = newPassword;
+        }
+        
+        // Update nav username
+        const navUsername = document.getElementById("nav-username");
+        if (navUsername) {
+            navUsername.innerText = firstName;
+        }
+        
+        // Show profile content again
+        document.getElementById("profile-content").style.display = "block";
+        document.getElementById("profile-edit").style.display = "none";
+        
+        // Update the profile display
+        renderProfile();
+        
+        alert("Profile updated successfully!");
+    }
+}
